@@ -1,0 +1,12 @@
+FROM arm64v8/alpine
+MAINTAINER e1z0 <e1z0@icloud.com>
+
+ENV RELEASE="4.0.0-beta.1+r98cf7d9b3c"
+
+# Install transmission
+COPY src/transmission-${RELEASE} /transmission
+RUN apk --no-cache --no-progress upgrade && \
+    apk --no-cache --no-progress add bash curl shadow sed tini tar xz wget cmake make build-base gcc \
+    tzdata curl-dev python3 libgcc libstdc++ icu-libs icu-dev gettext-dev libintl libc-dev linux-headers yarn && \
+    cd /transmission && \
+    mkdir build && cd build && cmake -DPREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_GTK=OFF -DENABLE_QT=OFF -DENABLE_MAC=OFF -DENABLE_WEB=ON -DENABLE_LIGHTWEIGHT=ON -DINSTALL_DOC=OFF .. && make && make install

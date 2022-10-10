@@ -1,0 +1,19 @@
+version: '2.4'
+services:
+    transmission:
+        container_name: transmission
+        hostname: transmission
+        restart: unless-stopped
+        image: transmission:aarch64
+        ports:
+            - "9092:9091"
+        volumes:
+            - "./data/transmission/incomplete:/var/lib/transmission-daemon/incomplete"
+            - "./data/transmission/info:/var/lib/transmission-daemon/info"
+            - "./Downloads:/downloads"
+        environment:
+            USERID: 1001
+            GROUPID: 1001
+            TR_UMASK: 2
+            TR_DOWNLOAD_DIR: "/downloads"
+            TZ: "Europe/Vilnius"

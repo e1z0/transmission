@@ -11,6 +11,15 @@ a cross-platform back-end.
 
 # How to use this image
 
+This docker image was designed for arm64 platform to run on RaspberryPI 3/4, the built version of this docker image can be located here: https://hub.docker.com/repository/docker/nulldevil/transmission4
+
+```
+make build_base
+make build
+make up
+```
+
+
 This Transmission container was built to automatically download a level1 host
 filter (can be used with dperson/openvpn).
 
@@ -103,4 +112,4 @@ You can use the modified configuration with:
 ## Issues
 
 If you have any problems with or questions about this image, please contact me
-through a [GitHub issue](https://github.com/dperson/transmission/issues).
+through a [GitHub issue](https://github.com/e1z0/transmission/issues).

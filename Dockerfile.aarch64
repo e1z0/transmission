@@ -1,15 +1,25 @@
 FROM arm64v8/alpine
-COPY qemu-aarch64-static /usr/bin/
-MAINTAINER David Personette <dperson@gmail.com>
 
-# Install transmission
-RUN apk --no-cache --no-progress upgrade && \
-    apk --no-cache --no-progress add bash curl shadow sed tini \
-                transmission-daemon tzdata && \
-    dir="/var/lib/transmission-daemon" && \
+MAINTAINER e1z0 <e1z0@icloud.com>
+
+
+
+# copy transmission
+COPY --from=transmission_4.0.0_base:aarch64 /usr/local/bin/transmission-daemon /usr/bin/transmission-daemon
+COPY --from=transmission_4.0.0_base:aarch64 /usr/local/bin/transmission-create /usr/bin/transmission-create
+COPY --from=transmission_4.0.0_base:aarch64 /usr/local/bin/transmission-edit /usr/bin/transmission-edit
+COPY --from=transmission_4.0.0_base:aarch64 /usr/local/bin/transmission-remote /usr/bin/transmission-remote
+COPY --from=transmission_4.0.0_base:aarch64 /usr/local/bin/transmission-show /usr/bin/transmission-show
+COPY --from=transmission_4.0.0_base:aarch64 /usr/local/share/transmission/public_html /usr/share/transmission/public_html
+
+COPY transmission.sh /usr/bin/
+
+RUN apk --no-cache --no-progress add shadow tini bash curl sed gzip libgcc libintl libstdc++ tzdata
+
+RUN  dir="/var/lib/transmission-daemon" && \
     file="$dir/info/settings.json" && \
-    mv /var/lib/transmission $dir && \
-    usermod -d $dir transmission && \
+    mkdir $dir && \
+    adduser -D -h $dir transmission && \
     [[ -d $dir/downloads ]] || mkdir -p $dir/downloads && \
     [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete && \
     [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists && \
@@ -38,7 +48,6 @@ RUN apk --no-cache --no-progress upgrade && \
     chown -Rh transmission. $dir && \
     rm -rf /tmp/*
 
-COPY transmission.sh /usr/bin/
 
 EXPOSE 9091 51413/tcp 51413/udp
 

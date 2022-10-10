@@ -18,6 +18,8 @@
 
 set -o nounset                              # Treat unset variables as an error
 
+TRANSMISSION_WEB_HOME=/usr/share/transmission/public_html
+
 dir="/var/lib/transmission-daemon"
 [[ -d $dir/downloads ]] || mkdir -p $dir/downloads
 [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
@@ -139,7 +141,7 @@ else
     fi
     exec su -l transmission -s /bin/bash -c "exec transmission-daemon \
                 --allowed \\* --blocklist --config-dir $dir/info \
-                --foreground --log-error --no-portmap \
+                --foreground --log-level=error --no-portmap \
                 $([[ ${NOAUTH:-""} ]] && echo '--no-auth' || echo "--auth \
                 --username ${TRUSER:-admin} --password ${TRPASSWD:-admin}")"
 fi
