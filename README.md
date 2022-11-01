@@ -11,7 +11,7 @@ a cross-platform back-end.
 
 # How to use this image
 
-This docker image was designed for arm64 platform to run on RaspberryPI 3/4, the built version of this docker image can be located here: https://hub.docker.com/repository/docker/nulldevil/transmission4
+This docker image was designed for arm64 platform to run on RaspberryPI 3/4, the built version of this docker image can be located here: https://hub.docker.com/r/nulldevil/transmission4
 
 ```
 make build_base
